@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css?family=Work+Sans:300,400,700';
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:300,400,700');
 $black: #222;
 $white: #fff;
 $grey: #999;
@@ -11,7 +11,7 @@ $kabul: #624a39;
 $primary-color: $yellow-peach;
 $primary-color-dark: darken( $primary-color, 10% );
 $primary-color-tint: lighten( $primary-color, 10% );
-$primary-font: "Work Sans", sans-serif;
+$primary-font: 'Work Sans', sans-serif;
 
 * { box-sizing: border-box; }
 body {
@@ -23,6 +23,7 @@ body {
 	line-height: 1.875em;
 	font-weight: 300;
 }
+
 .wrapper {
 	display: flex;
 	margin-top: 50px;
@@ -30,6 +31,7 @@ body {
 	min-width: 500px;
 	max-width: 600px;
 }
+
 .container {
 	flex: 1 0 50%;
 	padding: 30px 0;
@@ -139,6 +141,10 @@ body {
 		font-size: 0.75rem;
 		cursor: pointer;
 	}
+}
+
+.burg {
+	transition: 0.25s 1s;
 }
  
 .burg-deets,
@@ -266,7 +272,6 @@ body {
 .burg-completed {
 	.burg {
 		transform: scaleY(0.7);
-		transition: 0.25s 1s;
 	}
 }
 
@@ -372,6 +377,12 @@ body {
 .pop-straw,
 .fries-fry {
 	transition: 0.25s;
+}
+
+.svg-hide {
+	position: absolute;
+	height: 0;
+	width: 0;
 }
 
 @keyframes bounce {

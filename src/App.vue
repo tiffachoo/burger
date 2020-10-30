@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 155 45">
+		<svg class="svg-hide" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 155 45">
 			<defs>
 				<g id="bunTop">
 					<path class="burg-main burg-bun" d="M77.5,2c-31.82,0-59,10.93-70,22.32A18.26,18.26,0,0,0,2.5,37h0a5,5,0,0,0,5,5h140a5,5,0,0,0,5-5h0a18.26,18.26,0,0,0-5-12.68C136.51,12.93,109.32,2,77.5,2Z"/>
@@ -25,22 +25,33 @@
 				<path id="lettuce" class="burg-topping burg-topping-green" d="M117.5,26a15.64,15.64,0,0,1-14.71-10.32,5.64,5.64,0,0,0-10.58,0,15.64,15.64,0,0,1-29.41,0,5.64,5.64,0,0,0-10.58,0,15.64,15.64,0,0,1-29.42,0,5.64,5.64,0,0,0-10.58,0,5,5,0,0,1-9.42-3.37,15.64,15.64,0,0,1,29.42,0,5.64,5.64,0,0,0,10.58,0,15.64,15.64,0,0,1,29.42,0,5.64,5.64,0,0,0,10.58,0,15.64,15.64,0,0,1,29.41,0,5.64,5.64,0,0,0,10.58,0,15.64,15.64,0,0,1,29.42,0,5,5,0,0,1-9.41,3.37,5.64,5.64,0,0,0-10.59,0A15.63,15.63,0,0,1,117.5,26Z"/>
 			</defs>
 		</svg>
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 205 155">
+		<svg class="svg-hide" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 205 155">
 			<defs>
 				<path id="boxBottom" class="burg-box burg-main" d="M9.64,72.67H194.36a5.17,5.17,0,0,1,5,6.54l-15.88,58.72a19.85,19.85,0,0,1-19.12,14.73H39.68a19.85,19.85,0,0,1-19.12-14.73L4.68,79.22A5.17,5.17,0,0,1,9.64,72.67Z"/>
 				<path id="boxTop" class="burg-box burg-main" d="M196.73,82H7.27a5.2,5.2,0,0,1-5.08-6.54L18.47,16.73A20.28,20.28,0,0,1,38.08,2H165.92a20.28,20.28,0,0,1,19.61,14.73l16.29,58.72A5.2,5.2,0,0,1,196.73,82Z"/>
 			</defs>
 		</svg>
 
-		<div class="wrapper" :class="{'burg-completed': complete}">
+		<div 
+			:class="{ 'burg-completed': complete }"
+			class="wrapper" 
+		>
 			<transition name="squish-width">
-				<div v-if="!complete" class="container container-controls">
-					<label v-for="(topping, index) in toppings" class="input-checkbox">
+				<div 
+					v-if="!complete" 
+					class="container container-controls"
+				>
+					<label 
+						v-for="topping in toppings" 
+						:key="topping.name"
+						class="input-checkbox"
+					>
 						<input 
+							v-model="checked"
+							:value="topping"
 							type="checkbox"
 							class="checkbox-control"
-							:value="topping"
-							v-model="checked"/>
+						/>
 						<span class="checkbox-label">
 							{{ topping.name }}
 						</span>
@@ -50,48 +61,94 @@
 			<div class="container container-burg">
 				<div class="burg">
 					<div class="burg-bun-container">
-						<svg class="burg-topping-img" viewBox="0 0 155 45">
+						<svg 
+							class="burg-topping-img" 
+							viewBox="0 0 155 45"
+						>
 							<use xlink:href="#bunTop"/>
 						</svg>
 					</div>
 					<transition-group 
 						tag="div"
 						:css="false"
-						v-on:before-enter="bounceStart"
-						v-on:enter="bounceEnter"
-						v-on:leave="bounceLeave">
-						<div v-for="(item,key) in checked" :key="item" :id="'topping'+item.name" class="burg-topping-container" :data-height="item.height">
-							<svg :id="'svg'+item.name" class="burg-topping-img" viewBox="0 0 155 45">
-								<use :xlink:href="'#' + item.name | lowercase" class="topping"/>
+						@before-enter="bounceStart"
+						@enter="bounceEnter"
+						@leave="bounceLeave"
+					>
+						<div 
+							v-for="item in checked" 
+							:id="'topping' + item.name" 
+							:key="item.name" 
+							:data-height="item.height"
+							class="burg-topping-container" 
+						>
+							<svg 
+								:id="'svg' + item.name" 
+								class="burg-topping-img" 
+								viewBox="0 0 155 45"
+							>
+								<use 
+									:xlink:href="'#' + item.name | lowercase" 
+									class="topping"
+								/>
 							</svg>
 						</div>
 					</transition-group>
 					<div class="burg-bun-container">
-						<svg class="burg-topping-img" viewBox="0 0 155 45">
+						<svg 
+							class="burg-topping-img" 
+							viewBox="0 0 155 45"
+						>
 							<use xlink:href="#bunBottom"/>
 						</svg>
 					</div>
 				</div>
 				<transition name="fade-up">
-					<svg v-if="complete" id="svgBoxBottom" class="burg-box-img" viewBox="0 70 205 90">
+					<svg
+						v-if="complete"
+						id="svgBoxBottom"
+						class="burg-box-img"
+						viewBox="0 70 205 90"
+					>
 						<use xlink:href="#boxBottom"/>
 					</svg>
 				</transition>
 				<transition name="fade-down">
-					<svg v-if="complete" id="svgBoxTop" class="burg-box-img" viewBox="0 0 205 90">
+					<svg
+						v-if="complete"
+						id="svgBoxTop"
+						class="burg-box-img"
+						viewBox="0 0 205 90"
+					>
 						<use xlink:href="#boxTop"/>
 					</svg>
 				</transition>
 				<transition name="drop-down">
-					<svg v-if="complete" id="svgPop" class="pop-img" viewBox="0 -100 115 325">
+					<svg
+						v-if="complete"
+						id="svgPop"
+						class="pop-img"
+						viewBox="0 -100 115 325"
+					>
 						<g id="pop">
-							<path class="pop pop-straw" d="M89.55,9h-36a2,2,0,0,0-2,2V87a2,2,0,0,0,2,2h6a2,2,0,0,0,2-2V21a2,2,0,0,1,2-2h26a2,2,0,0,0,2-2V11A2,2,0,0,0,89.55,9Z"/>
-							<path class="pop pop-cup" d="M96.85,222.39H16.44a5.13,5.13,0,0,1-5.12-4.79L2,57.86a5.13,5.13,0,0,1,5.12-5.47h99a5.13,5.13,0,0,1,5.12,5.47L102,217.6A5.13,5.13,0,0,1,96.85,222.39Z"/>
+							<path 
+								class="pop pop-straw" 
+								d="M89.55,9h-36a2,2,0,0,0-2,2V87a2,2,0,0,0,2,2h6a2,2,0,0,0,2-2V21a2,2,0,0,1,2-2h26a2,2,0,0,0,2-2V11A2,2,0,0,0,89.55,9Z"
+							/>
+							<path 
+								class="pop pop-cup" 
+								d="M96.85,222.39H16.44a5.13,5.13,0,0,1-5.12-4.79L2,57.86a5.13,5.13,0,0,1,5.12-5.47h99a5.13,5.13,0,0,1,5.12,5.47L102,217.6A5.13,5.13,0,0,1,96.85,222.39Z"
+							/>
 						</g>
 					</svg>
 				</transition>
 				<transition name="drop-down">
-					<svg v-if="complete" id="svgFries" class="fries-img" viewBox="0 -100 117 250">
+					<svg 
+						v-if="complete" 
+						id="svgFries" 
+						class="fries-img" 
+						viewBox="0 -100 117 250"
+					>
 						<g id="fries">
 							<g>
 								<rect id="fry1" class="fries fries-fry" x="50.49" y="9" width="15" height="45" rx="2" ry="2"/>
@@ -110,99 +167,108 @@
 			</div>
 		</div>
 		<transition name="fade-squish">
-			<button v-if="!complete" @click="completeOrder" class="button button-large button-block">Order!</button>
+			<button
+				v-if="!complete"
+				class="button button-large button-block"
+				@click="completeOrder"
+			>Order!</button>
 		</transition>
 		
 		<transition name="fade">
-			<button v-if="complete" class="button-reset" @click="complete = false">Go back</button>
+			<button 
+				v-if="complete" 
+				class="button-reset" 
+				@click="complete = false">Go back</button>
 		</transition>
 	</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import anime from 'animejs/lib/anime.es.js';
 export default {
 	name: 'App',
-	components: {
-		HelloWorld
+	data() {
+		return {
+			complete: false,
+			toppings: [
+				{
+					name: 'Patty',
+					height: 25
+				}, 
+				{
+					name: 'Mustard',
+					height: 10
+				}, 
+				{
+					name: 'Ketchup',
+					height: 10
+				}, 
+				{
+					name: 'Tomato',
+					height: 10
+				}, 
+				{
+					name: 'Cheese',
+					height: 10
+				}, 
+				{
+					name: 'Lettuce',
+					height: 15
+				}
+			],
+			checked: [
+				{
+					name: 'Patty',
+					height: 25
+				}
+			]
+		};
 	},
-	data: {
-		complete: false,
-		toppings: [{
-			name: 'Patty',
-			height: 25
-		}, {
-			name: 'Mustard',
-			height: 10
-		}, {
-			name: 'Ketchup',
-			height: 10
-		}, {
-			name: 'Tomato',
-			height: 10
-		}, {
-			name: 'Cheese',
-			height: 10
-		}, {
-			name: 'Lettuce',
-			height: 15
-		}],
-		checked: [{
-			name: 'Patty',
-			height: 25
-		}]
-	},
-	// computed: {
-	// 	reverseChecked() {
-	// 		// let copy = [...this.checked];
-	// 		this.checked.splice(0, 0, this.checked.pop());
-	// 		return this.checked;
-	// 	}
-	// },
 	filters: {
-		lowercase: function lowercase(value) {
+		lowercase(value) {
 			return value.toLowerCase();
 		}
 	},
 	methods: {
-		bounceStart: function bounceStart(el) {
+		bounceStart(el) {
 			el.style.transform = 'scaleY(0)';
 			el.style.height = '0';
 		},
-		bounceEnter: function bounceEnter(el, done) {
-			var bounce = anime.timeline({
-				complete: function complete() {
+		bounceEnter(el, done) {
+			let bounce = anime.timeline({
+				complete() {
 					done();
 				}
 			});
-			var height = el.getAttribute('data-height');
-			bounce.add({
-				targets: el,
-				height: parseInt(height) + 20,
-				duration: 800,
-				// easing: 'linear',
-				elasticity: 100
-			}).add({
-				targets: el,
-				scaleY: 1,
-				delay: 100
-			}).add({
-				targets: el,
-				height: height,
-				duration: 600,
-				elasticity: 100
-			});
+			const height = el.getAttribute('data-height');
+			bounce
+				.add({
+					targets: el,
+					height: parseInt(height) + 20,
+					duration: 800,
+					// easing: 'linear',
+					elasticity: 100
+				})
+				.add({
+					targets: el,
+					scaleY: 1,
+					delay: 100
+				})
+				.add({
+					targets: el,
+					height: height,
+					duration: 600,
+					elasticity: 100
+				});
 		},
-		bounceLeave: function bounceLeave(el, done) {
-			var bounce = anime.timeline({
-				complete: function complete() {
+		bounceLeave(el, done) {
+			let bounce = anime.timeline({
+				complete() {
 					done();
 				}
 			});
 			bounce.add({
 				targets: el,
-				// scaleY: 0,
 				translateY: 10,
 				opacity: 0,
 				height: 0,
@@ -210,27 +276,14 @@ export default {
 				easing: 'linear',
 				elasticity: 100
 			});
-			// .add({
-			// 	targets: el,
-			// 	height: 0,
-			// 	easing: 'linear',
-			// 	elasticity: 0
-			// });
 		},
-		completeOrder: function completeOrder() {
+		completeOrder() {
 			this.complete = true;
 		}
 	}
 }
 </script>
 
-<style>
-#app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-	margin-top: 60px;
-}
+<style lang="scss">
+@import '@/styles/styles';
 </style>
